@@ -1,5 +1,5 @@
-import type { LinksFunction } from "@remix-run/cloudflare";
-import { cssBundleHref } from "@remix-run/css-bundle";
+import type { LinksFunction } from '@remix-run/cloudflare';
+import { cssBundleHref } from '@remix-run/css-bundle';
 import {
   Link,
   Links,
@@ -8,13 +8,13 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
-import styles from "./tailwind.css";
-import { ReactNode } from "react";
+} from '@remix-run/react';
+import styles from './tailwind.css';
+import { ReactNode } from 'react';
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: styles },
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+  { rel: 'stylesheet', href: styles },
+  ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
 ];
 
 export default function App() {
@@ -55,7 +55,7 @@ export default function App() {
   );
 }
 
-const repositoryUrl = "https://github.com/jkomyno/kongres-nextjs-2024"
+const repositoryUrl = 'https://github.com/jkomyno/kongres-nextjs-2024'
 
 function Layout({ children }: { children: ReactNode }) {
   return (
@@ -65,7 +65,7 @@ function Layout({ children }: { children: ReactNode }) {
       </main>
       <footer className="lg:px-24 sm:px-12 px-4 py-4 bg-white">
         <div className="px-4">
-          Check this on <Link className="text-primary underline-offset-4 hover:underline" to={repositoryUrl} target="_blank">Github (@jkomyno)</Link>.
+          Check this on <Link className="text-primary underline-offset-4 hover:underline" to={repositoryUrl} target="_blank" rel="noreferrer">Github (@jkomyno)</Link>.
         </div>
       </footer>
     </div>

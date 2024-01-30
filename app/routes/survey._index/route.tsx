@@ -1,4 +1,4 @@
-import type { MetaFunction } from "@remix-run/cloudflare";
+import type { MetaFunction } from '@remix-run/cloudflare';
 import { NavLink } from '@remix-run/react';
 
 const description = `
@@ -9,8 +9,8 @@ Finally, you will gain practical insights about the nuances and caveats of Edge 
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "Demo: Interactive web apps at the Edge with Remix, Neon, and Prisma" },
-    { name: "description", content: description },
+    { title: 'Demo: Interactive web apps at the Edge with Remix, Neon, and Prisma' },
+    { name: 'description', content: description },
   ];
 };
 
