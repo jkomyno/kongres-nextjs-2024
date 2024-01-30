@@ -3,6 +3,20 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --color-sapphire-50: 243 243 252;
+    --color-sapphire-100: 226 228 248;
+    --color-sapphire-200: 200 207 244;
+    --color-sapphire-300: 163 180 235;
+    --color-sapphire-400: 122 149 225;
+    --color-sapphire-500: 91 122 215;
+    --color-sapphire-600: 69 100 201;
+    --color-sapphire-700: 60 89 185;
+    --color-sapphire-800: 59 86 165;
+    --color-sapphire-900: 48 72 120;
+    --color-sapphire-950: 33 47 74;
+  }
+
   html {
     font-size: 20px;
   }
