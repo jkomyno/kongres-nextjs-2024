@@ -19,6 +19,11 @@ module.exports = {
     commonjs: true,
     es6: true,
   },
+  rules: {
+    "quotes": [
+      "error", "single", { "allowTemplateLiterals": true }
+    ]
+  },
 
   // Base config
   extends: ["eslint:recommended"],
