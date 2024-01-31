@@ -30,7 +30,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const cityValue = String(formData.get('city') || '')
 
   const { error: cityError, value: validatedCityValue } = await validateCityValue(cityValue)
-  
+
   if (cityError) {
     return json({
       ok: false,
@@ -78,13 +78,13 @@ export default function Create() {
 
   const fetcher = useFetcher<typeof action>()
   const actionResult = fetcher.data
-  
+
   const isSubmitting = fetcher.state === 'submitting'
     && fetcher.formData?.get('_action') === 'submit'
-  
+
   const formRef = useRef<HTMLFormElement>(null)
   const { toast } = useToast()
-    
+
   // Reset the form on successful submission.
   useEffect(function onSubmitResult() {
     if (fetcher.state === 'loading') {
@@ -110,59 +110,56 @@ export default function Create() {
   }, [isSubmitting])
 
   return (
-    <div className="bg-white h-full">
-      <Button variant="link" onClick={handleNavigateBack}>Go back</Button>
+    <div className="bg-white h-full rounded-md shadow-md flex items-center justify-center relative">
+      <Button className="absolute top-0 left-0" variant="link" onClick={handleNavigateBack}>Go back</Button>
       <div className="max-w-screen-xl flex flex-col flex-wrap items-center justify-between mx-auto p-4">
         <div className="sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-white px-6 py-8 shadow sm:rounded-lg sm:px-12">
-            <fetcher.Form
-              ref={formRef}
-              className="space-y-6"
-              method="post"
+          <fetcher.Form
+            ref={formRef}
+            className="space-y-6"
+            method="post"
+          >
+            <h2 className="text-xl text-bold text-center drop-shadow-sm">
+              What is your favourite Polish city?
+            </h2>
+
+            <ul className="grid w-full gap-2 md:grid-cols-2">
+              {
+                choices.map(({ label, value }) => (
+                  <li key={`key-${value}`}>
+                    <input type="radio" id={`radio-${value}`} name="city" value={value} className="hidden peer" />
+                    <label htmlFor={`radio-${value}`} className="inline-flex items-center justify-between gap-2 w-full p-4 text-gray-500 bg-white border border-gray-200 cursor-pointer peer-checked:border-sapphire-500 peer-checked:text-sapphire-500 rounded-md shadow-sm">
+                      <div className="block w-full text-lg font-semibold text-center">{label}</div>
+                    </label>
+                  </li>
+                ))
+              }
+            </ul>
+
+            <Button
+              disabled={isSubmitting}
+              type="submit"
+              size="lg"
+              name="_action"
+              value="submit"
+              className="w-full"
             >
-              <div>
-                <h2 className="mb-8 text-xl text-bold text-center">
-                  What is your favourite Polish city?
-                </h2>
+              {isSubmitting ? 'Submitting...' : 'Submit'}
+            </Button>
 
-                <ul className="grid w-full gap-6 md:grid-cols-2">
-                  {
-                    choices.map(({ label, value }) => (
-                      <li key={`key-${value}`}>
-                        <input type="radio" id={`radio-${value}`} name="city" value={value} className="hidden peer" />
-                        <label htmlFor={`radio-${value}`} className="inline-flex items-center justify-between gap-2 w-full p-4 text-gray-500 bg-white border border-gray-200 cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
-                          <div className="block w-full text-lg font-semibold text-center">{label}</div>
-                        </label>
-                      </li>
-                    ))
-                  }
-                </ul>
-              </div>
-
-              <Button
-                disabled={isSubmitting}
-                type="submit"
-                name="_action"
-                value="submit"
-                className="w-full"
-              >
-                {isSubmitting ? 'Submitting...' : 'Submit'}
-              </Button>
-
-              <div className="w-full">
-                {''}
-                {actionResult && !actionResult.ok && (
-                  <span id="city-error" className="pl-2 text-red-500">
-                    {actionResult.error}
-                  </span>
-                )}
-              </div>
-            </fetcher.Form>
-          </div>
+            <div className="w-full">
+              {''}
+              {actionResult && !actionResult.ok && (
+                <span id="city-error" className="text-red-500 text-sm">
+                  {actionResult.error}
+                </span>
+              )}
+            </div>
+          </fetcher.Form>
         </div>
         {
           loaderData.nSubmissions > 0 && (
-            <div>
+            <div className='text-sm'>
               <p>Your answers were recorded <span className="text-bold">{loaderData.nSubmissions} times</span> during this session.</p>
             </div>
           )
