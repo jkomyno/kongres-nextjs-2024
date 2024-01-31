@@ -12,6 +12,15 @@ Moreover, you will see how to query a Neon database using the familiar and type-
 
 Finally, you will gain practical insights about the nuances and caveats of Edge platforms, as Alberto shares firsthand experiences from making the Prisma internals compatible with this innovative computing stack. Are you ready for the future?
 
+## About
+
+This repository contains the source code for a simple survey web app.
+It's built with:
+- [React.js framework]: [Remix](https://remix.run)
+- [Data access tool]: [Prisma](https://prisma.io)
+- [Database]: [Neon](https://neon.tech).
+- [Deployment platform]: [Cloudflare Pages](https://pages.cloudflare.com)
+
 ## Requirements
 
 - [Node.js 20.9.0](https://nodejs.org/en) or superior*
@@ -19,12 +28,41 @@ Finally, you will gain practical insights about the nuances and caveats of Edge 
 
 (*) These are the versions used to develop this repository. Older versions might work as well, but they haven't been tested.
 
+## Database Setup: Neon
+
+To create a new Neon database setup:
+
+- Create a new [Neon account](https://neon.tech), if you don't have one already.
+- Navigate to https://console.neon.tech/app/projects.
+- Click "Create new project". For example, call the project "edge-prisma" and the database "talks".
+- Copy the connection string from the "Database" tab. It should look like this:
+  ```
+  postgresql://jkomyno:...-pooler.eu-central-1.aws.neon.tech/talks?sslmode=require&pgbouncer=true
+  ```
+- Rename `.dev.vars.example` into `.dev.vars`, and replace the `DATABASE_URL` value with the connection string you just copied.
+
+> [!TIP]
+> Cloudflare's CLI tool, Wrangler, reads `.dev.vars` file instead of a `.env` file.
+> Prisma, instead, by default reads `.env` files.
+> Rather than having two different files with the same database credentials, you can use a single one, as long as you run each `prisma` command prefixed by `pnpm run env --`.
+
 ## Development
 
 - Install the dependencies via:
   ```sh
   pnpm i
   ```
+
+- Write the [database schema](./prisma/schema.prisma) to the database via:
+  ```sh
+  pnpm run env -- pnpm prisma db push
+  ```
+
+- Seed the database via:
+  ```sh
+  pnpm run env -- pnpm prisma db seed
+  ```
+  You only need to do this once.
 
 - Emulate the Cloudflare runtime locally via:
   ```sh
