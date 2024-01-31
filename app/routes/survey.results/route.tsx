@@ -50,14 +50,18 @@ export default function Create() {
   }
 
   return (
-    <div className="bg-white h-full">
-      <Button variant="link" onClick={handleNavigateBack}>Go back</Button>
-      <div className="max-w-screen-xl flex flex-col flex-wrap items-center justify-between mx-auto p-4">
-        <div className="sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <h2 className="mt-8 mb-8 text-xl text-bold text-center">
-            Survey Results
-          </h2>
-          <div className="bg-white px-6 py-8 shadow sm:rounded-lg sm:px-12">
+    <div className="bg-white h-full relative rounded-md shadow-md">
+      <Button className="absolute top-0 left-0" variant="link" onClick={handleNavigateBack}>Go back</Button>
+      <div className="h-full flex flex-col gap-8 items-center justify-center p-4">
+        <h2 className="text-xl text-bold text-center drop-shadow-sm">
+          Survey Results
+        </h2>
+        <div className="w-full md:max-w-[480px] mx-auto">
+          <div className=''>
+            <h3 className="mb-4 text-lg text-bold">
+              Favourite Polish cities
+            </h3>
+
             <Suspense fallback={<ResultStatsFallback />}>
               {
                 /**
@@ -74,11 +78,11 @@ export default function Create() {
                   : <ResultStatsFallback />
               }
             </Suspense>
-            <div className="w-full mt-8 flex">
-              <Button variant="destructive" onClick={handleRefresh}>
-                Refresh
-              </Button>
-            </div>
+          </div>
+          <div className="w-full mt-8 flex">
+            <Button onClick={handleRefresh}>
+              Refresh
+            </Button>
           </div>
         </div>
       </div>
@@ -88,57 +92,60 @@ export default function Create() {
 
 function renderCityStats(cityStats: CityStats) {
   return (
-    <div className="pb-1.5">
-      <h3 className="mb-4 text-lg text-bold">
-        Favourite Polish cities
-      </h3>
-      <div className="flex flex-col gap-4">
-        {cityStats.entries.map(({ value, label, count }) => (
-          <div key={value} className="flex flex-row items-center gap-4">
-            <div className="flex flex-col w-1/2">
-              <span className="text-sm text-gray-400">{label}</span>
-              <span className="text-lg text-gray-800">{count}</span>
-            </div>
-            <div className="w-1/2">
-              <div className="bg-gray-200 h-4 rounded-full">
-                <div className="bg-blue-600 h-4 rounded-full" style={{ width: `${count * 100 / (cityStats.count)}%` }}></div>
-              </div>
+    <div className="flex flex-col gap-4">
+      {cityStats.entries.map(({ value, label, count }) => (
+        <div key={value} className="flex flex-row items-center gap-4">
+          <div className="flex flex-col w-1/2">
+            <span className="text-sm text-gray-400">{label}</span>
+            <span className="text-lg text-gray-800">{count}</span>
+          </div>
+          <div className="w-1/2">
+            <div className="bg-gray-200 h-4 rounded-full overflow-hidden">
+              <div className="bg-sapphire-500 h-4" style={{ width: `${count * 100 / (cityStats.count)}%` }}></div>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   )
 }
 
 function ResultStatsFallback() {
   return (
-    <div role="status" className="max-w-md pt-4 border border-gray-200 rounded shadow animate-pulse md:px-4">
-      <div className="h-2.5 bg-gray-200 rounded-full w-32 mb-2.5"></div>
-      <div className="flex items-baseline">
-        <div className="w-full bg-gray-200 rounded-t-lg h-48"></div>
-        <div className="w-full h-56 ms-6 bg-gray-200 rounded-t-lg"></div>
-        <div className="w-full bg-gray-200 rounded-t-lg h-56 ms-6"></div>
-        <div className="w-full h-24 ms-6 bg-gray-200 rounded-t-lg"></div>
-        <div className="w-full bg-gray-200 rounded-t-lg h-36 ms-6"></div>
-      </div>
-      <span className="text-lg text-gray-400">Loading...</span>
+    <div role="status" className="flex flex-col gap-4">
+      {[...Array(4).keys()].map((value) => (
+        <div key={value} className="flex flex-row items-center gap-4">
+          <div className="flex flex-col w-1/2">
+            <span className="text-sm text-gray-400">#{value + 1} </span>
+            <span className="w-8 h-[35px] rounded-md bg-gray-300 animate-pulse text-gray-800"></span>
+          </div>
+          <div className="w-1/2">
+            <div className="bg-gray-300 h-4 rounded-full overflow-hidden animate-pulse">
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
 
 function ResultStatsError() {
   return (
-    <div role="status" className="max-w-sm pt-4 border bg-red-200 rounded shadow animate-pulse md:px-4">
-      <div className="h-2.5 bg-red-400 rounded-full w-32 mb-2.5"></div>
-      <div className="flex items-baseline">
-        <div className="w-full bg-red-400 rounded-t-lg h-48"></div>
-        <div className="w-full h-56 ms-6 bg-red-400 rounded-t-lg"></div>
-        <div className="w-full bg-red-400 rounded-t-lg h-56 ms-6"></div>
-        <div className="w-full h-24 ms-6 bg-red-400 rounded-t-lg"></div>
-        <div className="w-full bg-red-400 rounded-t-lg h-36 ms-6"></div>
-      </div>
-      <span className="text-lg text-black">Error occurred while loading.</span>
+
+    <div role="status" className="flex flex-col gap-4">
+      {[...Array(4).keys()].map((value) => (
+        <div key={value} className="flex flex-row items-center gap-4">
+          <div className="flex flex-col w-1/2">
+            <span className="text-sm text-red-300">#{value + 1} </span>
+            <span className="w-8 h-[35px] rounded-md bg-red-400 animate-pulse"></span>
+          </div>
+          <div className="w-1/2">
+            <div className="bg-red-400 h-4 rounded-full overflow-hidden animate-pulse">
+            </div>
+          </div>
+        </div>
+      ))}
+      <span className="text-lg text-red-400 drop-shadow-sm">Error occurred while loading.</span>
     </div>
   )
 }
