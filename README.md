@@ -1,4 +1,4 @@
-# Underrated gems of Rust & WebAssembly: Errors · Async · I/O
+# Interactive web apps at the Edge with Remix, Neon, and Prisma
 
 ---
 
