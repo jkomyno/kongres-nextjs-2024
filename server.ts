@@ -6,7 +6,7 @@ export type AppEnv = {
   DATABASE_URL: string,
 }
 
-declare module "@remix-run/cloudflare" {
+declare module '@remix-run/cloudflare' {
   interface AppLoadContext {
     env: AppEnv,
   }

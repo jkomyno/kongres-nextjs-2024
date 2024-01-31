@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { getPrisma } from '~/lib/prisma.server'
 
 export const cities = [
