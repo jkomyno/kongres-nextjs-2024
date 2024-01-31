@@ -34,7 +34,7 @@ export default function App() {
         {/* All link exports on all routes will go here */}
         <Links />
       </head>
-      <body className='bg-neutral-400'>
+      <body className='bg-sapphire-400'>
         {/* Child routes go here */}
         <Layout>
           <Outlet />
@@ -61,13 +61,13 @@ const repositoryUrl = 'https://github.com/jkomyno/kongres-nextjs-2024'
 function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="h-lvh flex flex-col justify-between">
-      <main className="lg:px-24 sm:p-12 p-4 flex-grow">
+      <main className="lg:px-24 sm:p-12 p-2 flex-grow">
         {children}
         <Toaster />
       </main>
-      <footer className="lg:px-24 sm:px-12 px-4 py-4 bg-white">
+      <footer className="lg:px-24 sm:px-12 p-2 bg-white">
         <div className="px-4 text-sm">
-          Check this on <Link className="text-primary underline-offset-4 hover:underline" to={repositoryUrl} target="_blank" rel="noreferrer">Github (@jkomyno)</Link>.
+          Check this on <Link className="text-primary underline-offset-4 underline" to={repositoryUrl} target="_blank" rel="noreferrer">Github (@jkomyno)</Link>.
         </div>
       </footer>
     </div>

@@ -71,11 +71,11 @@ export default function Create() {
     <div className="bg-white h-full relative rounded-md shadow-md">
       <Button className="absolute top-0 left-0" variant="link" onClick={handleNavigateBack}>Go back</Button>
       <div className="h-full flex flex-col gap-8 items-center justify-center p-4">
-        <h2 className="text-xl text-bold text-center drop-shadow-sm">
+        <h2 className="text-xl text-bold text-center drop-shadow-sm mt-4">
           Survey Results
         </h2>
         <div className="w-full md:max-w-[480px] mx-auto">
-          <div className=''>
+          <div>
             <h3 className="mb-4 text-lg text-bold">
               Favourite Polish cities
             </h3>
@@ -97,7 +97,7 @@ export default function Create() {
               }
             </Suspense>
           </div>
-          <div className="w-full mt-8 flex">
+          <div className="w-full mt-2 flex">
             <Button onClick={handleRefresh}>
               Refresh
             </Button>

@@ -113,7 +113,7 @@ export default function Create() {
     <div className="bg-white h-full rounded-md shadow-md flex items-center justify-center relative">
       <Button className="absolute top-0 left-0" variant="link" onClick={handleNavigateBack}>Go back</Button>
       <div className="max-w-screen-xl flex flex-col flex-wrap items-center justify-between mx-auto p-4">
-        <div className="sm:mx-auto sm:w-full sm:max-w-[480px]">
+        <div className="sm:mx-auto sm:w-full sm:max-w-[480px] mt-4">
           <fetcher.Form
             ref={formRef}
             className="space-y-6"
