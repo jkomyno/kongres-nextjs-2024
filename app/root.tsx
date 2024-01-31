@@ -9,6 +9,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react'
+import { Toaster } from '~/components/ui/toaster'
 import styles from './tailwind.css'
 import { ReactNode } from 'react'
 
@@ -62,6 +63,7 @@ function Layout({ children }: { children: ReactNode }) {
     <div className="h-lvh flex flex-col justify-between">
       <main className="lg:px-24 sm:p-12 p-4 bg-slate-400 flex-grow">
         {children}
+        <Toaster />
       </main>
       <footer className="lg:px-24 sm:px-12 px-4 py-4 bg-white">
         <div className="px-4">
