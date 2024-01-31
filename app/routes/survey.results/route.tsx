@@ -17,7 +17,7 @@ type CityStats = {
   total: number
 }
 
-async function loadCityStats(context: LoaderFunctionArgs['context']): Promise<CityStats> {
+async function loadCityStats(context: LoaderFunctionArgs['context']) {
   const prisma = getPrisma(context.env)
 
   const [cityStats] = await prisma.$queryRaw<[CityStats]>(Prisma.sql`
