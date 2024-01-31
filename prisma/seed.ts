@@ -1,47 +1,74 @@
-import { City } from '@prisma/client'
 import { getPrisma } from '~/lib/prisma.server'
+
+export const cities = [
+  {
+    value: 'warszawa',
+    label: 'Warszawa',
+  },
+  {
+    value: 'krakow',
+    label: 'Kraków',
+  },
+  {
+    value: 'wroclaw',
+    label: 'Wrocław',
+  },
+  {
+    value: 'gdansk',
+    label: 'Gdańsk',
+  },
+] as const
 
 async function main() {
   const prisma = getPrisma(process.env)
-  await prisma.survey.deleteMany()
 
-  const seed: Record<keyof typeof City, number> = {
-    WROCLAW: 50 / 5,
-    GDANSK: 100 / 5,
-    KRAKOW: 75 / 5,
-    WARSZAWA: 25 / 5,
-  }
+  await prisma.city.deleteMany()
+  await createCities(prisma)
+  
+  // await prisma.survey.deleteMany()
+  // await createSurveys(prisma)
 
-  const inputData = Object.entries(seed)
-    .map(([city, count]) => Array.from({ length: count })
-      .map(_ => ({ city: city as City }))
-    ).flat()
-
-  console.log('inputData')
-  console.dir(inputData, { depth: null })
-    
-  await prisma.survey.createMany({
-    data: inputData,
-  })
-
-  // [
-  //   { _count: 5, city: 'WARSZAWA' },
-  //   { _count: 15, city: 'KRAKOW' },
-  //   { _count: 10, city: 'WROCLAW' },
-  //   { _count: 20, city: 'GDANSK' }
-  // ]
-  //
-  // See: https://github.com/prisma/prisma/issues/17276#issuecomment-1918209602
-  const groupBy = await prisma.survey.groupBy({
-    by: ['city'],
-    _count: true,
-    orderBy: {
-      city: 'asc',
-    },
-  })
+  const groupBy = await prisma.$queryRaw<Array<{ count: number, city: string, label: string }>>`
+    SELECT
+      COUNT(s."id")::int AS "count",
+      c."name" AS "city",
+      c."label" AS "label"
+    FROM "public"."Survey" s
+    RIGHT JOIN "public"."City" c
+      ON c."id" = s."cityId"
+    GROUP BY
+      c."name",
+      c."label"
+    ORDER BY
+      c."name" ASC
+  `
 
   console.log('groupBy')
   console.dir(groupBy)
 }
 
 main()
+
+async function createCities(prisma: ReturnType<typeof getPrisma>) {
+  const citiesInput = cities.map(({ value, label }, i) => ({ name: value, label, id: i + 1 }))
+
+  await prisma.city.createMany({
+    data: citiesInput,
+  })
+}
+
+async function createSurveys(prisma: ReturnType<typeof getPrisma>) {
+  const seed = cities.map(({ value }) => ({
+    name: value,
+    count: Math.floor(Math.random() * 100) + 1,
+  }))
+
+  const surveysInput = seed
+    .map(({ count }, i) => Array.from({ length: count })
+      .map(_ => ({ cityId: i + 1 }))
+    ).flat()
+
+  await prisma.survey.createMany({
+    data: surveysInput,
+  })
+}

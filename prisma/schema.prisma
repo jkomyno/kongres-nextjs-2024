@@ -3,8 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["driverAdapters"]
-  engineType = "wasm"
 }
 
 datasource db {
@@ -12,17 +10,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum City {
-  WARSZAWA
-  KRAKOW
-  WROCLAW
-  GDANSK
+model City {
+  id     Int     @id
+  name   String  @unique
+  label  String
+  Survey Survey[]
 }
 
 model Survey {
   id        Int      @id @default(autoincrement())
-  city      City
+  city      City     @relation(fields: [cityId], references: [id])
   createdAt DateTime @default(now())
+  cityId    Int
 
-  @@index([city])
+  @@index([cityId])
 }
