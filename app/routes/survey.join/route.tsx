@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useFetcher, useNavigate, useLoaderData } from '@remix-run/react'
 import { Button } from '~/components/ui/button'
+import { useToast } from '~/components/ui/use-toast'
 import { ActionFunctionArgs, json } from '@remix-run/cloudflare'
 import { validateCityValue } from './validate'
 import { choices } from '~/lib/choices'
@@ -82,10 +83,28 @@ export default function Create() {
     && fetcher.formData?.get('_action') === 'submit'
   
   const formRef = useRef<HTMLFormElement>(null)
+  const { toast } = useToast()
     
   // Reset the form on successful submission.
   useEffect(function onSubmitResult() {
     if (fetcher.state === 'loading') {
+
+      const toastDuration = 3000
+
+      if (actionResult?.ok) {
+        toast({
+          title: 'Answer submitted successfully',
+          description: actionResult.city.label,
+          duration: toastDuration,
+        })
+      } else {
+        toast({
+          title: 'Answer could not be submitted',
+          duration: toastDuration,
+          variant: 'destructive',
+        })
+      }
+
       formRef.current?.reset()
     }
   }, [isSubmitting])
