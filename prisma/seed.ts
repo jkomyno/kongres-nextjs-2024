@@ -1,19 +1,8 @@
-import { PrismaClient, City } from '@prisma/client';
-import { neonConfig, Pool } from '@neondatabase/serverless'
-import { PrismaNeon } from '@prisma/adapter-neon'
-import ws from 'ws';
-
-neonConfig.webSocketConstructor = ws;
+import { City } from '@prisma/client'
+import { getPrisma } from '~/lib/prisma.server'
 
 async function main() {
-  const connectionString = `${process.env.DATABASE_URL}`
-
-  const neon = new Pool({ connectionString })
-  const adapter = new PrismaNeon(neon)
-  const prisma = new PrismaClient({
-    adapter,
-  });
-
+  const prisma = getPrisma(process.env)
   await prisma.survey.deleteMany();
 
   const seed: Record<keyof typeof City, number> = {
