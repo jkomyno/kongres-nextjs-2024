@@ -3,26 +3,26 @@ import { getPrisma } from '~/lib/prisma.server'
 
 async function main() {
   const prisma = getPrisma(process.env)
-  await prisma.survey.deleteMany();
+  await prisma.survey.deleteMany()
 
   const seed: Record<keyof typeof City, number> = {
     WROCLAW: 50 / 5,
     GDANSK: 100 / 5,
     KRAKOW: 75 / 5,
     WARSZAWA: 25 / 5,
-  };
+  }
 
   const inputData = Object.entries(seed)
     .map(([city, count]) => Array.from({ length: count })
       .map(_ => ({ city: city as City }))
-    ).flat();
+    ).flat()
 
   console.log('inputData')
   console.dir(inputData, { depth: null })
     
   await prisma.survey.createMany({
     data: inputData,
-  });
+  })
 
   // [
   //   { _count: 5, city: 'WARSZAWA' },
