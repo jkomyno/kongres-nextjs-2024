@@ -1,8 +1,9 @@
+import { Prisma } from '@prisma/client'
 import { Await, useLoaderData, useNavigate, useRevalidator } from '@remix-run/react'
 import { Suspense, } from 'react'
-import { defer } from '@remix-run/cloudflare'
+import { LoaderFunctionArgs, defer } from '@remix-run/cloudflare'
 import { Button } from '~/components/ui/button'
-import { choices } from '~/lib/choices'
+import { getPrisma } from '~/lib/prisma.server'
 
 type CityStatEntry = {
   value: string
@@ -15,24 +16,37 @@ type CityStats = {
   count: number
 }
 
-export async function loader() {
-  const query = new Promise<CityStats>((resolve) => {
-    const cityStatEntries: CityStatEntry[] = choices.map(({ value, label }) => ({
-      value,
-      label,
-      count: Math.floor(Math.random() * 100) + 1,
-    }))
+export async function loader({ context }: LoaderFunctionArgs) {
+  const prisma = getPrisma(context.env)
 
-    const cityStats: CityStats = {
-      entries: cityStatEntries,
-      count: cityStatEntries.reduce((acc, { count }) => acc + count, 0),
-    }
-
-    setTimeout(() => {
-      resolve(cityStats)
-      // reject(new Error('Something went wrong'));
-    }, 2000)
-  })
+  const query = prisma.$queryRaw<[CityStats]>(Prisma.sql`
+    WITH stats_inner AS (
+      SELECT
+        COUNT(s."id")::int as "count",
+        c."name" as "value",
+        c."label"
+      FROM "public"."Survey" s
+      RIGHT JOIN "public"."City" c
+        ON c."id" = s."cityId"
+      GROUP BY
+        c."name",
+        c."label"
+      ORDER BY
+        c."name" ASC
+    )
+    SELECT
+      SUM(si."count")::int as "total",
+      json_agg(si.* ORDER BY si."value" ASC) as "entries"
+    FROM stats_inner si
+  `)
+    .then(([cityStats]: [CityStats]): CityStats => {
+      return cityStats
+    })
+    .catch((error: unknown) => {
+      const e = error as Error
+      console.error(e)
+      throw e
+    })
 
   return defer({ query })
 }

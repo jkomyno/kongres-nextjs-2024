@@ -3,8 +3,9 @@ import { useFetcher, useNavigate, useLoaderData } from '@remix-run/react'
 import { Button } from '~/components/ui/button'
 import { ActionFunctionArgs, json } from '@remix-run/cloudflare'
 import { validateCityValue } from './validate'
-import { choices, choicesMap } from '~/lib/choices'
+import { choices } from '~/lib/choices'
 import { getNSubmissions, incrementNSubmissions } from '~/lib/submissions'
+import { getPrisma } from '~/lib/prisma.server'
 
 // Metadata for the `/survey/join` page.
 export const meta = () => {
@@ -23,8 +24,7 @@ export async function loader() {
 }
 
 // The `action` function responds to form submissions.
-// TODO: store answer into database
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
   const formData = await request.formData()
   const cityValue = String(formData.get('city') || '')
 
@@ -36,9 +36,30 @@ export async function action({ request }: ActionFunctionArgs) {
       error: cityError,
     } as const, 400)
   }
+
+  const prisma = getPrisma(context.env)
+
+  try {
+    const createdSurvey = await prisma.survey.create({
+      data: {
+        city: {
+          connect: {
+            name: validatedCityValue,
+          },
+        },
+      },
+      include: {
+        city: true,
+      },
+    })
+
+    const { name: value, label } = createdSurvey.city
+    const city = { value, label }
   
-  const simulateDbError = Math.random() < 0.33
-  if (simulateDbError) {
+    incrementNSubmissions()
+
+    return json({ ok: true, errors: null, city } as const, 200)
+  } catch (_) {
     const dbError = 'Cannot connect to the database.'
 
     return json({
@@ -46,19 +67,6 @@ export async function action({ request }: ActionFunctionArgs) {
       error: dbError,
     } as const, 500)
   }
-
-  const city = {
-    value: validatedCityValue,
-    label: choicesMap.get(validatedCityValue)!,
-  }
-
-  incrementNSubmissions()
-
-  await new Promise((resolve) => {
-    setTimeout(resolve, 300)
-  })
-  
-  return json({ ok: true, errors: null, city } as const, 200)
 }
 
 export default function Create() {
