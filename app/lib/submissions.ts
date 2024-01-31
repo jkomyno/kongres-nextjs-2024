@@ -1,10 +1,10 @@
-let nSubmissions = 0;
+let nSubmissions = 0
 
 export function getNSubmissions() {
-  return nSubmissions;
+  return nSubmissions
 }
 
 export function incrementNSubmissions() {
-  nSubmissions++;
-  return nSubmissions;
+  nSubmissions++
+  return nSubmissions
 }

@@ -1,10 +1,10 @@
-import { choices } from "../route";
+import { choices } from '~/lib/choices'
 
 export function validate(city: string) {
-  let errors: { city?: string } = { };
+  const errors: { city?: string } = { }
 
   if (city && !choices.find(({ value }) => value === city)) {
-    errors.city = "Invalid city.";
+    errors.city = 'Invalid city.'
   }
 
   return {

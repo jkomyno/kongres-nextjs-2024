@@ -22,7 +22,10 @@ module.exports = {
   rules: {
     "quotes": [
       "error", "single", { "allowTemplateLiterals": true }
-    ]
+    ],
+    "semi": [
+      "error", "never"
+    ],
   },
 
   // Base config

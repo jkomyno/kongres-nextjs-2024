@@ -16,7 +16,7 @@ export const choices = [
     value: 'gdansk',
     label: 'Gdańsk',
   },
-] as const;
+] as const
 
 
 export const choicesMap = new Map(choices.map(({ value, label }) => [value, label]))

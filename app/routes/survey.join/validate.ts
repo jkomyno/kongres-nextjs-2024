@@ -1,11 +1,11 @@
-import { choices } from "~/lib/choices";
+import { choices } from '~/lib/choices'
 
 export function validateCityValue(city: string) {
   const error = !city
-    ? "No city was selected."
+    ? 'No city was selected.'
     : !choices.find(({ value }) => value === city)
-      ? "Invalid city submitted."
-      : undefined;
+      ? 'Invalid city submitted.'
+      : undefined
 
   return {
     error,

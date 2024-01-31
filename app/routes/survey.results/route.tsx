@@ -1,8 +1,8 @@
-import { Await, useLoaderData, useNavigate, useRevalidator } from '@remix-run/react';
-import { Suspense, } from 'react';
-import { defer } from '@remix-run/cloudflare';
-import { Button } from '~/components/ui/button';
-import { choices } from "~/lib/choices";
+import { Await, useLoaderData, useNavigate, useRevalidator } from '@remix-run/react'
+import { Suspense, } from 'react'
+import { defer } from '@remix-run/cloudflare'
+import { Button } from '~/components/ui/button'
+import { choices } from '~/lib/choices'
 
 type CityStatEntry = {
   value: string
@@ -21,32 +21,32 @@ export async function loader() {
       value,
       label,
       count: Math.floor(Math.random() * 100) + 1,
-    }));
+    }))
 
     const cityStats: CityStats = {
       entries: cityStatEntries,
       count: cityStatEntries.reduce((acc, { count }) => acc + count, 0),
-    };
+    }
 
     setTimeout(() => {
-      resolve(cityStats);
+      resolve(cityStats)
       // reject(new Error('Something went wrong'));
-    }, 2000);
+    }, 2000)
   })
 
-  return defer({ query });
+  return defer({ query })
 }
 
 export default function Create() {
-  const navigate = useNavigate();
-  const handleNavigateBack = () => navigate(-1);
+  const navigate = useNavigate()
+  const handleNavigateBack = () => navigate(-1)
 
   // Note: `query` remains `fullfilled` even after revalidation
-  const revalidator = useRevalidator();
-  const { query } = useLoaderData<typeof loader>();
+  const revalidator = useRevalidator()
+  const { query } = useLoaderData<typeof loader>()
 
   const handleRefresh = () => {
-    revalidator.revalidate();
+    revalidator.revalidate()
   }
 
   return (

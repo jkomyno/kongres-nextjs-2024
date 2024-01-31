@@ -1,18 +1,18 @@
-import type { MetaFunction } from '@remix-run/cloudflare';
-import { NavLink } from '@remix-run/react';
+import type { MetaFunction } from '@remix-run/cloudflare'
+import { NavLink } from '@remix-run/react'
 
 const description = `
 Embark on an interactive journey with Alberto, as he explores React development using Remix, Edge deployments via Cloudflare Pages, and serverless data storage with Neon. You will learn the key advantages of Edge computing runtime platforms, and how to adapt your Remix apps for them.
 Moreover, you will see how to query a Neon database using the familiar and type-safe Prisma ORM.
 Finally, you will gain practical insights about the nuances and caveats of Edge platforms, as Alberto shares firsthand experiences from making the Prisma internals compatible with this innovative computing stack. Are you ready for the future?
-`;
+`
 
 export const meta: MetaFunction = () => {
   return [
     { title: 'Demo: Interactive web apps at the Edge with Remix, Neon, and Prisma' },
     { name: 'description', content: description },
-  ];
-};
+  ]
+}
 
 export default function Index() {
   return (
