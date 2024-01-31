@@ -1,4 +1,3 @@
-
 export const choices = [
   {
     value: 'warszawa',
@@ -18,5 +17,5 @@ export const choices = [
   },
 ] as const
 
-
+export const nChoices = choices.length
 export const choicesMap = new Map(choices.map(({ value, label }) => [value, label]))
