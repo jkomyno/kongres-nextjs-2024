@@ -1,0 +1,6 @@
+# You can use this as:
+# - `pnpm run env -- prisma db push`
+# - `pnpm run env -- prisma db seed`
+# - `pnpm run env -- prisma generate`
+
+DATABASE_URL="postgresql://...neon.tech/talks?sslmode=require&pgbouncer=true"
