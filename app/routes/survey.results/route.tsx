@@ -30,7 +30,6 @@ export async function loader() {
 
     setTimeout(() => {
       resolve(cityStats)
-      // reject(new Error('Something went wrong'));
     }, 2000)
   })
 
@@ -94,18 +93,19 @@ function renderCityStats(cityStats: CityStats) {
   return (
     <div className="flex flex-col gap-4">
       {cityStats.entries.map(({ value, label, count }) => (
-        <div key={value} className="flex flex-row items-center gap-4">
-          <div className="flex flex-col w-1/2">
+        <div key={value} className="flex flex-row items-center gap-2">
+          <div className="flex flex-col w-2/5">
             <span className="text-sm text-gray-400">{label}</span>
             <span className="text-lg text-gray-800">{count}</span>
           </div>
-          <div className="w-1/2">
+          <div className="w-3/5">
             <div className="bg-gray-200 h-4 rounded-full overflow-hidden">
               <div className="bg-sapphire-500 h-4" style={{ width: `${count * 100 / (cityStats.count)}%` }}></div>
             </div>
           </div>
         </div>
       ))}
+      <span className="mt-4 text-lg text-gray-800 drop-shadow-sm">Total submissions: <span className="text-lg text-gray-800">{cityStats.count}</span></span>
     </div>
   )
 }
@@ -114,17 +114,18 @@ function ResultStatsFallback() {
   return (
     <div role="status" className="flex flex-col gap-4">
       {[...Array(4).keys()].map((value) => (
-        <div key={value} className="flex flex-row items-center gap-4">
-          <div className="flex flex-col w-1/2">
+        <div key={value} className="flex flex-row items-center gap-2">
+          <div className="flex flex-col w-2/5">
             <span className="text-sm text-gray-400">#{value + 1} </span>
             <span className="w-8 h-[35px] rounded-md bg-gray-300 animate-pulse text-gray-800"></span>
           </div>
-          <div className="w-1/2">
+          <div className="w-3/5">
             <div className="bg-gray-300 h-4 rounded-full overflow-hidden animate-pulse">
             </div>
           </div>
         </div>
       ))}
+      <span className="mt-4 text-lg w-2/3 sm:w-2/5 h-[35px] bg-gray-300 animate-pulse" />
     </div>
   )
 }
@@ -134,18 +135,18 @@ function ResultStatsError() {
 
     <div role="status" className="flex flex-col gap-4">
       {[...Array(4).keys()].map((value) => (
-        <div key={value} className="flex flex-row items-center gap-4">
-          <div className="flex flex-col w-1/2">
+        <div key={value} className="flex flex-row items-center gap-2">
+          <div className="flex flex-col w-2/5">
             <span className="text-sm text-red-300">#{value + 1} </span>
             <span className="w-8 h-[35px] rounded-md bg-red-400 animate-pulse"></span>
           </div>
-          <div className="w-1/2">
+          <div className="w-3/5">
             <div className="bg-red-400 h-4 rounded-full overflow-hidden animate-pulse">
             </div>
           </div>
         </div>
       ))}
-      <span className="text-lg text-red-400 drop-shadow-sm">Error occurred while loading.</span>
+      <span className="mt-4 text-lg text-red-400 drop-shadow-sm">Error occurred while loading.</span>
     </div>
   )
 }
