@@ -17,10 +17,10 @@ type CityStats = {
   total: number
 }
 
-export async function loader({ context }: LoaderFunctionArgs) {
+async function loadCityStats(context: LoaderFunctionArgs['context']): Promise<CityStats> {
   const prisma = getPrisma(context.env)
 
-  const query = prisma.$queryRaw<[CityStats]>(Prisma.sql`
+  const [cityStats] = await prisma.$queryRaw<[CityStats]>(Prisma.sql`
     WITH stats_inner AS (
       SELECT
         COUNT(s."id")::int as "count",
@@ -40,9 +40,12 @@ export async function loader({ context }: LoaderFunctionArgs) {
       json_agg(si.* ORDER BY si."count" DESC, si."value" ASC) as "entries"
     FROM stats_inner si
   `)
-    .then(([cityStats]: [CityStats]): CityStats => {
-      return cityStats
-    })
+
+  return cityStats
+}
+
+export async function loader({ context }: LoaderFunctionArgs) {
+  const query = loadCityStats(context)
     .catch((error: unknown) => {
       const e = error as Error
       console.error(e)
