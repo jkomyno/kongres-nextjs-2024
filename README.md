@@ -16,10 +16,14 @@ Finally, you will gain practical insights about the nuances and caveats of Edge 
 
 This repository contains the source code for a simple survey web app.
 It's built with:
-- [React.js framework]: [Remix](https://remix.run)
-- [Data access tool]: [Prisma](https://prisma.io)
-- [Database]: [Neon](https://neon.tech).
-- [Deployment platform]: [Cloudflare Pages](https://pages.cloudflare.com)
+- React.js framework: [Remix](https://remix.run)
+  - Specifically, it uses the [Cloudflare Pages template](remix-run/remix/templates/cloudflare-pages) via
+    ```sh
+    pnpm create remix --template remix-run/remix/templates/cloudflare-pages
+    ```
+- Data access tool: [Prisma](https://prisma.io)
+- Database: [Neon](https://neon.tech)
+- Deployment platform: [Cloudflare Pages](https://pages.cloudflare.com)
 
 ## Requirements
 
