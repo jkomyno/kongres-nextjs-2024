@@ -55,7 +55,7 @@ export async function loader({ context }: LoaderFunctionArgs) {
   return defer({ query })
 }
 
-export default function Create() {
+export default function SurveyResults() {
   const navigate = useNavigate()
   const handleNavigateBack = () => navigate(-1)
 

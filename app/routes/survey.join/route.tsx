@@ -70,7 +70,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
   }
 }
 
-export default function Create() {
+export default function SurveyJoin() {
   const navigate = useNavigate()
   const handleNavigateBack = () => navigate(-1)
 
