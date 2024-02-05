@@ -21,7 +21,7 @@ model City {
 
 model Survey {
   id        Int      @id @default(autoincrement())
-  city      City     @relation(fields: [cityId], references: [id])
+  city      City     @relation(fields: [cityId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   cityId    Int
 

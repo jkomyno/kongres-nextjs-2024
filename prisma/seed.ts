@@ -23,11 +23,10 @@ export const cities = [
 async function main() {
   const prisma = getPrisma(process.env)
 
+  await prisma.survey.deleteMany()
   await prisma.city.deleteMany()
   await createCities(prisma)
-  
-  // await prisma.survey.deleteMany()
-  // await createSurveys(prisma)
+  await createSurveys(prisma)
 
   const groupBy = await prisma.$queryRaw<Array<{ count: number, city: string, label: string }>>`
     SELECT
